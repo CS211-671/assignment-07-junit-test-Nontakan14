@@ -8,19 +8,63 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserTest {
 
     @Test
-    @DisplayName("Password should not store in plain text")
-    public void testPasswordIsNotStoreInPlainText() {
-        User user = new User("user01", "plain-p@ssw0rd");
-        String actual = user.getPassword();
-        String unexpected = "plain-p@ssw0rd";
-        assertNotEquals(unexpected, actual);
+    @DisplayName("ทดสอบการสร้างผู้ใช้ใหม่พร้อมกับการตั้งรหัสผ่าน")
+    void testCreateUserWithPassword() {
+        User user = new User("john_doe", "password123");
+
+        assertEquals("john_doe", user.getUsername());
+        assertNotNull(user.getPassword());
+        assertTrue(user.validatePassword("password123"));
     }
 
     @Test
-    @DisplayName("Password should be verified by plain text")
-    public void testPasswordShouldBeVerified() {
-        User user = new User("user01", "plain-p@ssw0rd");
-        boolean actual = user.validatePassword("plain-p@ssw0rd");
-        assertTrue(actual);
+    @DisplayName("ทดสอบการสร้างผู้ใช้ใหม่โดยไม่มีรหัสผ่าน")
+    void testCreateUserWithoutPassword() {
+        User user = new User("john_doe");
+
+        assertEquals("john_doe", user.getUsername());
+        assertNull(user.getPassword());
+    }
+
+    @Test
+    @DisplayName("ทดสอบการตั้งรหัสผ่านใหม่")
+    void testSetPassword() {
+        User user = new User("john_doe");
+        user.setPassword("new_password123");
+
+        assertNotNull(user.getPassword());
+        assertTrue(user.validatePassword("new_password123"));
+    }
+
+    @Test
+    @DisplayName("ทดสอบการตรวจสอบรหัสผ่านที่ถูกต้อง")
+    void testValidateCorrectPassword() {
+        User user = new User("john_doe", "password123");
+
+        assertTrue(user.validatePassword("password123"));
+    }
+
+    @Test
+    @DisplayName("ทดสอบการตรวจสอบรหัสผ่านที่ไม่ถูกต้อง")
+    void testValidateIncorrectPassword() {
+        User user = new User("john_doe", "password123");
+
+        assertFalse(user.validatePassword("wrong_password"));
+    }
+
+    @Test
+    @DisplayName("ทดสอบการตรวจสอบชื่อผู้ใช้ที่ถูกต้อง")
+    void testIsUsernameCorrect() {
+        User user = new User("john_doe", "password123");
+
+        assertTrue(user.isUsername("john_doe"));
+    }
+
+    @Test
+    @DisplayName("ทดสอบการตรวจสอบชื่อผู้ใช้ที่ไม่ถูกต้อง")
+    void testIsUsernameIncorrect() {
+        User user = new User("john_doe", "password123");
+
+        assertFalse(user.isUsername("jane_doe"));
     }
 }

@@ -8,49 +8,64 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserListTest {
 
     @Test
-    @DisplayName("User should be found in UserList")
-    public void testUserListFindUser() {
-        // TODO: add 3 users to UserList
+    @DisplayName("ทดสอบการสร้างผู้ใช้ใหม่พร้อมกับการตั้งรหัสผ่าน")
+    void testCreateUserWithPassword() {
+        User user = new User("john_doe", "password123");
 
-        // TODO: find one of them
-
-        // TODO: assert that UserList found User
-        // String expected = "<one of username>";
-        // String actual = user.getUsername();
-        // assertEquals(expected, actual);
+        assertEquals("john_doe", user.getUsername());
+        assertNotNull(user.getPassword());
+        assertTrue(user.validatePassword("password123"));
     }
 
     @Test
-    @DisplayName("User can change password")
-    public void testUserCanChangePassword() {
-        // TODO: add 3 users to UserList
+    @DisplayName("ทดสอบการสร้างผู้ใช้ใหม่โดยไม่มีรหัสผ่าน")
+    void testCreateUserWithoutPassword() {
+        User user = new User("john_doe");
 
-        // TODO: change password of one user
-
-        // TODO: assert that user can change password
-        // assertTrue(actual);
+        assertEquals("john_doe", user.getUsername());
+        assertNull(user.getPassword());
     }
 
     @Test
-    @DisplayName("User with correct password can login")
-    public void testUserListShouldReturnObjectIfUsernameAndPasswordIsCorrect() {
-        // TODO: add 3 users to UserList
+    @DisplayName("ทดสอบการตั้งรหัสผ่านใหม่")
+    void testSetPassword() {
+        User user = new User("john_doe");
+        user.setPassword("new_password123");
 
-        // TODO: call login() with correct username and password
-
-        // TODO: assert that User object is found
-        // assertEquals(expected, actual);
+        assertNotNull(user.getPassword());
+        assertTrue(user.validatePassword("new_password123"));
     }
 
     @Test
-    @DisplayName("User with incorrect password cannot login")
-    public void testUserListShouldReturnNullIfUsernameAndPasswordIsIncorrect() {
-        // TODO: add 3 users to UserList
+    @DisplayName("ทดสอบการตรวจสอบรหัสผ่านที่ถูกต้อง")
+    void testValidateCorrectPassword() {
+        User user = new User("john_doe", "password123");
 
-        // TODO: call login() with incorrect username or incorrect password
-
-        // TODO: assert that the method return null
-        // assertNull(actual);
+        assertTrue(user.validatePassword("password123"));
     }
 
+    @Test
+    @DisplayName("ทดสอบการตรวจสอบรหัสผ่านที่ไม่ถูกต้อง")
+    void testValidateIncorrectPassword() {
+        User user = new User("john_doe", "password123");
+
+        assertFalse(user.validatePassword("wrong_password"));
+    }
+
+    @Test
+    @DisplayName("ทดสอบการตรวจสอบชื่อผู้ใช้ที่ถูกต้อง")
+    void testIsUsernameCorrect() {
+        User user = new User("john_doe", "password123");
+
+        assertTrue(user.isUsername("john_doe"));
+    }
+
+    @Test
+    @DisplayName("ทดสอบการตรวจสอบชื่อผู้ใช้ที่ไม่ถูกต้อง")
+    void testIsUsernameIncorrect() {
+        User user = new User("john_doe", "password123");
+
+        assertFalse(user.isUsername("jane_doe"));
+    }
 }
+
