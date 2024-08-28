@@ -62,6 +62,15 @@ public class Student {
     }
 
     @Override
+    public boolean equals(Object obj){
+        Student other = (Student) obj;
+        if (id.equals(other.getId()) && name.equals(other.getName())){
+            return true
+        }
+        return null
+    }
+
+    @Override
     public String toString() {
         return "{" +
                 "id: '" + id + '\'' +

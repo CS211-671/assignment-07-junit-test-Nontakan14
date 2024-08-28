@@ -52,10 +52,18 @@ public class StudentList {
         if (exist != null) {
             return exist.grade();
         }
-        return null;
+            return false;
     }
 
     public ArrayList<Student> getStudents() {
         return students;
+    }
+
+
+    public Student findStudentByObject(Student s){
+        if (students.contains(s)){
+            return s;   //ใช้เช็คว่าข้อมูลในออบเจ็กที่ เรฟเฟอเรน มาตัวเดียวกันไหม ไม่ return False
+        }
+
     }
 }
